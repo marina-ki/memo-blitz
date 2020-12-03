@@ -2,14 +2,17 @@ import { Suspense } from "react"
 import Layout from "app/layouts/Layout"
 import { Link, usePaginatedQuery, useRouter, BlitzPage } from "blitz"
 import getMemos from "app/memos/queries/getMemos"
+import { useCurrentUser } from "app/hooks/useCurrentUser"
 
 const ITEMS_PER_PAGE = 100
 
 export const MemosList = () => {
   const router = useRouter()
+  const currentUser = useCurrentUser()
   const page = Number(router.query.page) || 0
   const [{ memos, hasMore }] = usePaginatedQuery(getMemos, {
     orderBy: { id: "asc" },
+    where: { userId: currentUser?.id },
     skip: ITEMS_PER_PAGE * page,
     take: ITEMS_PER_PAGE,
   })
@@ -23,7 +26,7 @@ export const MemosList = () => {
         {memos.map((memo) => (
           <li key={memo.id}>
             <Link href={`/memos/${memo.id}`}>
-              <a>{memo.name}</a>
+              <a>{memo.title}</a>
             </Link>
           </li>
         ))}
