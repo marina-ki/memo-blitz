@@ -4,9 +4,11 @@ import { Link, useRouter, useQuery, useMutation, useParam, BlitzPage } from "bli
 import getMemo from "app/memos/queries/getMemo"
 import updateMemo from "app/memos/mutations/updateMemo"
 import MemoForm from "app/memos/components/MemoForm"
+import { useCurrentUser } from "app/hooks/useCurrentUser"
 
 export const EditMemo = () => {
   const router = useRouter()
+  const currentUser = useCurrentUser()
   const memoId = useParam("memoId", "number")
   const [memo, { setQueryData }] = useQuery(getMemo, { where: { id: memoId } })
   const [updateMemoMutation] = useMutation(updateMemo)
@@ -18,18 +20,24 @@ export const EditMemo = () => {
 
       <MemoForm
         initialValues={memo}
-        onSubmit={async () => {
-          try {
-            const updated = await updateMemoMutation({
-              where: { id: memo.id },
-              data: { name: "MyNewName" },
-            })
-            await setQueryData(updated)
-            alert("Success!" + JSON.stringify(updated))
-            router.push(`/memos/${updated.id}`)
-          } catch (error) {
-            console.log(error)
-            alert("Error creating memo " + JSON.stringify(error, null, 2))
+        onSubmit={async (event) => {
+          if (currentUser) {
+            try {
+              const updated = await updateMemoMutation({
+                where: { id: memo.id },
+                data: {
+                  title: event.target[0].value,
+                  body: event.target[1].value,
+                  user: { connect: { id: currentUser.id } },
+                },
+              })
+              await setQueryData(updated)
+              alert("Success!" + JSON.stringify(updated))
+              router.push(`/memos/${updated.id}`)
+            } catch (error) {
+              console.log(error)
+              alert("Error creating memo " + JSON.stringify(error, null, 2))
+            }
           }
         }}
       />
