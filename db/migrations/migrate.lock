@@ -1,3 +1,4 @@
 # Prisma Migrate lockfile v1
 
 20201203141152-initial-migration
+20201203153040-create-memo
