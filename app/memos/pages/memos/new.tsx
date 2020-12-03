@@ -2,9 +2,11 @@ import Layout from "app/layouts/Layout"
 import { Link, useRouter, useMutation, BlitzPage } from "blitz"
 import createMemo from "app/memos/mutations/createMemo"
 import MemoForm from "app/memos/components/MemoForm"
+import { useCurrentUser } from "app/hooks/useCurrentUser"
 
 const NewMemoPage: BlitzPage = () => {
   const router = useRouter()
+  const currentUser = useCurrentUser()
   const [createMemoMutation] = useMutation(createMemo)
 
   return (
@@ -13,13 +15,21 @@ const NewMemoPage: BlitzPage = () => {
 
       <MemoForm
         initialValues={{}}
-        onSubmit={async () => {
-          try {
-            const memo = await createMemoMutation({ data: { name: "MyName" } })
-            alert("Success!" + JSON.stringify(memo))
-            router.push(`/memos/${memo.id}`)
-          } catch (error) {
-            alert("Error creating memo " + JSON.stringify(error, null, 2))
+        onSubmit={async (event) => {
+          if (currentUser) {
+            try {
+              const memo = await createMemoMutation({
+                data: {
+                  title: event.target[0].value,
+                  body: event.target[1].value,
+                  user: { connect: { id: currentUser.id } },
+                },
+              })
+              alert("Success!" + JSON.stringify(memo))
+              router.push(`/memos/${memo.id}`)
+            } catch (error) {
+              alert("Error creating memo " + JSON.stringify(error, null, 2))
+            }
           }
         }}
       />

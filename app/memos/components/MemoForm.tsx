@@ -13,8 +13,10 @@ const MemoForm = ({ initialValues, onSubmit }: MemoFormProps) => {
         onSubmit(event)
       }}
     >
-      <div>Put your form fields here. But for now, just click submit</div>
-      <div>{JSON.stringify(initialValues)}</div>
+      <input placeholder="タイトル" defaultValue={initialValues.title} />
+      <br />
+      <textarea placeholder="本文" defaultValue={initialValues.body} />
+      <br />
       <button>Submit</button>
     </form>
   )
