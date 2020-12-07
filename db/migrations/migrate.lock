@@ -3,3 +3,4 @@
 20201203141152-initial-migration
 20201203153040-create-memo
 20201207084814-create-category
+20201207090033-add-category-id-to-memo
