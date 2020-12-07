@@ -23,6 +23,7 @@ const NewMemoPage: BlitzPage = () => {
                   title: event.target[0].value,
                   body: event.target[1].value,
                   user: { connect: { id: currentUser.id } },
+                  category: { connect: { id: 1 } }, //TODO
                 },
               })
               alert("Success!" + JSON.stringify(memo))
