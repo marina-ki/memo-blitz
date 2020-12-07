@@ -4,9 +4,11 @@ import { Link, useRouter, useQuery, useMutation, useParam, BlitzPage } from "bli
 import getCategory from "app/categories/queries/getCategory"
 import updateCategory from "app/categories/mutations/updateCategory"
 import CategoryForm from "app/categories/components/CategoryForm"
+import { useCurrentUser } from "app/hooks/useCurrentUser"
 
 export const EditCategory = () => {
   const router = useRouter()
+  const currentUser = useCurrentUser()
   const categoryId = useParam("categoryId", "number")
   const [category, { setQueryData }] = useQuery(getCategory, { where: { id: categoryId } })
   const [updateCategoryMutation] = useMutation(updateCategory)
@@ -18,18 +20,20 @@ export const EditCategory = () => {
 
       <CategoryForm
         initialValues={category}
-        onSubmit={async () => {
-          try {
-            const updated = await updateCategoryMutation({
-              where: { id: category.id },
-              data: { name: "MyNewName" },
-            })
-            await setQueryData(updated)
-            alert("Success!" + JSON.stringify(updated))
-            router.push(`/categories/${updated.id}`)
-          } catch (error) {
-            console.log(error)
-            alert("Error creating category " + JSON.stringify(error, null, 2))
+        onSubmit={async (event) => {
+          if (currentUser) {
+            try {
+              const updated = await updateCategoryMutation({
+                where: { id: category.id },
+                data: { name: event.target[0].value, user: { connect: { id: currentUser.id } } },
+              })
+              await setQueryData(updated)
+              alert("Success!" + JSON.stringify(updated))
+              router.push(`/categories/${updated.id}`)
+            } catch (error) {
+              console.log(error)
+              alert("Error creating category " + JSON.stringify(error, null, 2))
+            }
           }
         }}
       />
