@@ -2,14 +2,17 @@ import { Suspense } from "react"
 import Layout from "app/layouts/Layout"
 import { Link, usePaginatedQuery, useRouter, BlitzPage } from "blitz"
 import getCategories from "app/categories/queries/getCategories"
+import { useCurrentUser } from "app/hooks/useCurrentUser"
 
 const ITEMS_PER_PAGE = 100
 
 export const CategoriesList = () => {
   const router = useRouter()
+  const currentUser = useCurrentUser()
   const page = Number(router.query.page) || 0
   const [{ categories, hasMore }] = usePaginatedQuery(getCategories, {
     orderBy: { id: "asc" },
+    where: { userId: currentUser?.id },
     skip: ITEMS_PER_PAGE * page,
     take: ITEMS_PER_PAGE,
   })
