@@ -2,9 +2,11 @@ import Layout from "app/layouts/Layout"
 import { Link, useRouter, useMutation, BlitzPage } from "blitz"
 import createCategory from "app/categories/mutations/createCategory"
 import CategoryForm from "app/categories/components/CategoryForm"
+import { useCurrentUser } from "app/hooks/useCurrentUser"
 
 const NewCategoryPage: BlitzPage = () => {
   const router = useRouter()
+  const currentUser = useCurrentUser()
   const [createCategoryMutation] = useMutation(createCategory)
 
   return (
@@ -13,13 +15,17 @@ const NewCategoryPage: BlitzPage = () => {
 
       <CategoryForm
         initialValues={{}}
-        onSubmit={async () => {
-          try {
-            const category = await createCategoryMutation({ data: { name: "MyName" } })
-            alert("Success!" + JSON.stringify(category))
-            router.push(`/categories/${category.id}`)
-          } catch (error) {
-            alert("Error creating category " + JSON.stringify(error, null, 2))
+        onSubmit={async (event) => {
+          if (currentUser) {
+            try {
+              const category = await createCategoryMutation({
+                data: { name: event.target[0].value, user: { connect: { id: currentUser.id } } },
+              })
+              alert("Success!" + JSON.stringify(category))
+              router.push(`/categories/${category.id}`)
+            } catch (error) {
+              alert("Error creating category " + JSON.stringify(error, null, 2))
+            }
           }
         }}
       />

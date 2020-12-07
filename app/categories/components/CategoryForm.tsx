@@ -13,8 +13,7 @@ const CategoryForm = ({ initialValues, onSubmit }: CategoryFormProps) => {
         onSubmit(event)
       }}
     >
-      <div>Put your form fields here. But for now, just click submit</div>
-      <div>{JSON.stringify(initialValues)}</div>
+      <input placeholder="カテゴリー名" defaultValue={initialValues.name} />
       <button>Submit</button>
     </form>
   )
