@@ -5,6 +5,8 @@ import { useCurrentUser } from "app/hooks/useCurrentUser"
 
 export const Sidebar = () => {
   const currentUser = useCurrentUser()
+  const router = useRouter()
+  const currentCategoryId = router.params.categoryId
 
   const [{ categories, hasMore }] = useQuery(getCategories, {
     orderBy: { id: "desc" },
@@ -14,18 +16,32 @@ export const Sidebar = () => {
   if (!currentUser) return null
 
   return (
-    <aside className="bg-white w-64 min-h-screen flex-column">
-      <div className="bg-white border-b px-4 h-10 flex item-center">
-        <span className="text-blue-900 py-2">Application</span>
-      </div>
-      <div className="flex-grow">
-        <ul>
-          {categories.map((category) => (
-            <li className="py-1 px-4" key={category.name}>
-              <a href={`/categories/${category.id}`}>{category.name}</a>
-            </li>
-          ))}
-        </ul>
+    <aside className="flex flex-col sm:flex-row sm:justify-around">
+      <div className="bg-white w-60 min-h-screen flex-column">
+        <div className="flex items-center justify-center mt-10">
+          <a href="/memos">Application</a>
+        </div>
+        <nav className="mt-10">
+          {categories.map((category) =>
+            Number(currentCategoryId) == category.id ? (
+              <a
+                className="flex items-center py-2 px-8 bg-gray-200 text-gray-700 border-r-4 border-gray-700"
+                href={`/categories/${category.id}`}
+                key={category.id}
+              >
+                {category.name}
+              </a>
+            ) : (
+              <a
+                className="flex items-center  py-2 px-8 text-gray-600 border-r-4 border-white hover:bg-gray-100 hover:text-gray-700 hover:border-gray-700"
+                href={`/categories/${category.id}`}
+                key={category.id}
+              >
+                {category.name}
+              </a>
+            )
+          )}
+        </nav>
       </div>
     </aside>
   )
