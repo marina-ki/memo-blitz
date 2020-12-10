@@ -3,6 +3,7 @@ import Layout from "app/layouts/Layout"
 import logout from "app/auth/mutations/logout"
 import { useCurrentUser } from "app/hooks/useCurrentUser"
 import { Suspense } from "react"
+import { MemosList } from "app/memos/components/MemosList"
 
 /*
  * This file is just for a pleasant getting started page for your new app.
@@ -16,19 +17,7 @@ const UserInfo = () => {
   if (currentUser) {
     return (
       <>
-        <button
-          className="button small"
-          onClick={async () => {
-            await logoutMutation()
-          }}
-        >
-          Logout
-        </button>
-        <div>
-          User id: <code>{currentUser.id}</code>
-          <br />
-          User role: <code>{currentUser.role}</code>
-        </div>
+        <MemosList />
       </>
     )
   } else {
@@ -50,7 +39,11 @@ const UserInfo = () => {
 }
 
 const Home: BlitzPage = () => {
-  return <div>ホーム</div>
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <UserInfo />
+    </Suspense>
+  )
 }
 
 Home.getLayout = (page) => <Layout title="Home">{page}</Layout>
