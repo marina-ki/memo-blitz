@@ -3,6 +3,7 @@ import Layout from "app/layouts/Layout"
 import { Link, useRouter, useQuery, useParam, BlitzPage, useMutation } from "blitz"
 import getCategory from "app/categories/queries/getCategory"
 import deleteCategory from "app/categories/mutations/deleteCategory"
+import { MemosList } from "app/memos/components/MemosList"
 
 export const Category = () => {
   const router = useRouter()
@@ -12,8 +13,7 @@ export const Category = () => {
 
   return (
     <div>
-      <h1>Category {category.id}</h1>
-      <pre>{JSON.stringify(category, null, 2)}</pre>
+      <h1>{category.name}</h1>
 
       <Link href={`/categories/${category.id}/edit`}>
         <a>Edit</a>
@@ -30,6 +30,8 @@ export const Category = () => {
       >
         Delete
       </button>
+
+      <MemosList categoryId={categoryId} />
     </div>
   )
 }
@@ -37,12 +39,6 @@ export const Category = () => {
 const ShowCategoryPage: BlitzPage = () => {
   return (
     <div>
-      <p>
-        <Link href="/categories">
-          <a>Categories</a>
-        </Link>
-      </p>
-
       <Suspense fallback={<div>Loading...</div>}>
         <Category />
       </Suspense>

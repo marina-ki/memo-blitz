@@ -6,13 +6,17 @@ import { useCurrentUser } from "app/hooks/useCurrentUser"
 
 const ITEMS_PER_PAGE = 100
 
-export const MemosList = () => {
+type Props = {
+  categoryId?: number
+}
+
+export const MemosList = ({ categoryId }: Props) => {
   const router = useRouter()
   const currentUser = useCurrentUser()
   const page = Number(router.query.page) || 0
   const [{ memos, hasMore }] = usePaginatedQuery(getMemos, {
     orderBy: { updatedAt: "desc" },
-    where: { userId: currentUser?.id },
+    where: { userId: currentUser?.id, categoryId },
     skip: ITEMS_PER_PAGE * page,
     take: ITEMS_PER_PAGE,
   })
