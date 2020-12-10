@@ -4,6 +4,8 @@ import { queryCache } from "react-query"
 import LoginForm from "app/auth/components/LoginForm"
 
 import "app/styles/index.css"
+import { CategoriesProvider } from "../contexts/categoriesContext"
+import { Suspense } from "react"
 
 export default function App({ Component, pageProps }: AppProps) {
   const getLayout = Component.getLayout || ((page) => page)
@@ -19,7 +21,9 @@ export default function App({ Component, pageProps }: AppProps) {
         queryCache.resetErrorBoundaries()
       }}
     >
-      {getLayout(<Component {...pageProps} />)}
+      <Suspense fallback="Loading...">
+        <CategoriesProvider>{getLayout(<Component {...pageProps} />)}</CategoriesProvider>
+      </Suspense>
     </ErrorBoundary>
   )
 }
