@@ -6,7 +6,6 @@ import deleteCategory from "app/categories/mutations/deleteCategory"
 import { MemosList } from "app/memos/components/MemosList"
 import { PencilOutlineIcon } from "app/components/icons/PencilOutlineIcon"
 import { TrashOutlineIcon } from "app/components/icons/TrashOutlineIcon"
-import { CheckIcon } from "app/components/icons/CheckIcon"
 
 export const Category = () => {
   const router = useRouter()
