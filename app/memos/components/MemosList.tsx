@@ -31,7 +31,7 @@ export const MemosList = ({ categoryId }: Props) => {
           {memos.map((memo) => (
             <Link href={`/memos/${memo.id}`}>
               <article className="w-full lg:w-1/3" key={memo.id}>
-                <div className="py-8 px-4 m-2 border border-gray-200 rounded-lg bg-white ">
+                <div className="py-8 px-4 m-2 border border-gray-200 bg-white hover:border-gray-400">
                   {categoryId ? null : (
                     <h2 className="tracking-widest text-xs title-font font-medium text-indigo-500 mb-1">
                       {memo.category.name}
