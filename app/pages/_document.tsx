@@ -1,4 +1,4 @@
-import {Document, Html, DocumentHead, Main, BlitzScript /*DocumentContext*/} from 'blitz'
+import { Document, Html, DocumentHead, Main, BlitzScript /*DocumentContext*/, Head } from "blitz"
 
 class MyDocument extends Document {
   // Only uncomment if you need to customize this behaviour
@@ -11,6 +11,12 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <DocumentHead />
+        {/* <Head>
+          <script
+            src="https://cdn.jsdelivr.net/npm/focus-visible@5.2.0/dist/focus-visible.min.js"
+            defer
+          ></script>
+        </Head> */}
         <body>
           <Main />
           <BlitzScript />

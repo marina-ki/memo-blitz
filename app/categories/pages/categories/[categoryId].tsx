@@ -6,6 +6,7 @@ import deleteCategory from "app/categories/mutations/deleteCategory"
 import { MemosList } from "app/memos/components/MemosList"
 import { PencilOutlineIcon } from "app/components/icons/PencilOutlineIcon"
 import { TrashOutlineIcon } from "app/components/icons/TrashOutlineIcon"
+import { CheckIcon } from "app/components/icons/CheckIcon"
 
 export const Category = () => {
   const router = useRouter()
@@ -27,24 +28,15 @@ export const Category = () => {
         <h1 className="sm:text-3xl text-2xl font-medium title-font mr-4 text-gray-900">
           {category.name}
         </h1>
-        <a
-          role="button"
-          className="flex items-center"
+        <button
+          className="focus:outline-none focus-visible:outline-black focus-visible:bg-red-400"
           onClick={handleEdit}
-          onKeyDown={handleEdit}
-          tabIndex={0}
         >
           <PencilOutlineIcon className="mr-2" />
-        </a>
-        <a
-          role="button"
-          className="flex items-center"
-          onClick={handleDelete}
-          onKeyDown={handleDelete}
-          tabIndex={0}
-        >
+        </button>
+        <button className="focus:outline-none focus-visible:outline-black" onClick={handleDelete}>
           <TrashOutlineIcon />
-        </a>
+        </button>
         <button
           className="flex-shrink-0 text-white border-0 py-2 px-8 ml-auto focus:outline-none rounded bg-purple-500 hover:bg-purple-900"
           onClick={() => {

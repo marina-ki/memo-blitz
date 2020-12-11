@@ -2,6 +2,19 @@ import React, { FC, useState, useEffect } from "react"
 import { Link, useQuery, useRouter, BlitzPage } from "blitz"
 import getCategories from "app/categories/queries/getCategories"
 import { useCurrentUser } from "app/hooks/useCurrentUser"
+import { Category } from "@prisma/client"
+
+const NavItem = ({ category, isActive }: { category: Category; isActive: boolean }) => {
+  const className = isActive
+    ? "bg-gray-200 text-gray-700 border-r-4 border-gray-700"
+    : "text-gray-600 border-r-4 border-white hover:bg-gray-100 hover:text-gray-700 hover:border-gray-700"
+
+  return (
+    <a className={`flex items-center py-2 px-8 ${className}`} href={`/categories/${category.id}`}>
+      {category.name}
+    </a>
+  )
+}
 
 export const Sidebar = () => {
   const currentUser = useCurrentUser()
@@ -22,25 +35,13 @@ export const Sidebar = () => {
           <a href="/">Application</a>
         </div>
         <nav className="mt-10">
-          {categories.map((category) =>
-            Number(currentCategoryId) == category.id ? (
-              <a
-                className="flex items-center py-2 px-8 bg-gray-200 text-gray-700 border-r-4 border-gray-700"
-                href={`/categories/${category.id}`}
-                key={category.id}
-              >
-                {category.name}
-              </a>
-            ) : (
-              <a
-                className="flex items-center  py-2 px-8 text-gray-600 border-r-4 border-white hover:bg-gray-100 hover:text-gray-700 hover:border-gray-700"
-                href={`/categories/${category.id}`}
-                key={category.id}
-              >
-                {category.name}
-              </a>
-            )
-          )}
+          {categories.map((category) => (
+            <NavItem
+              category={category}
+              isActive={Number(currentCategoryId) == category.id}
+              key={category.id}
+            />
+          ))}
         </nav>
       </div>
     </aside>
