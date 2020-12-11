@@ -29,8 +29,8 @@ export const MemosList = ({ categoryId }: Props) => {
       <div className="px-5 py-12">
         <div className="flex flex-wrap">
           {memos.map((memo) => (
-            <Link href={`/memos/${memo.id}`}>
-              <article className="w-full lg:w-1/3" key={memo.id}>
+            <Link href={`/memos/${memo.id}`} key={memo.id}>
+              <article className="w-full lg:w-1/3">
                 <div className="py-8 px-4 m-2 border border-gray-200 bg-white hover:border-gray-400">
                   {categoryId ? null : (
                     <h2 className="tracking-widest text-xs title-font font-medium text-indigo-500 mb-1">
