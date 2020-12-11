@@ -17,6 +17,14 @@ const UserInfo = () => {
   if (currentUser) {
     return (
       <>
+        <button
+          className="button small"
+          onClick={async () => {
+            await logoutMutation()
+          }}
+        >
+          Logout
+        </button>
         <MemosList />
       </>
     )

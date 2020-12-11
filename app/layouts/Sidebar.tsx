@@ -19,7 +19,7 @@ export const Sidebar = () => {
     <aside className="flex flex-col sm:flex-row sm:justify-around">
       <div className="bg-white w-60 min-h-screen flex-column">
         <div className="flex items-center justify-center mt-10">
-          <a href="/memos">Application</a>
+          <a href="/">Application</a>
         </div>
         <nav className="mt-10">
           {categories.map((category) =>
